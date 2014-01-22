@@ -120,9 +120,10 @@ action :add do
     mode 00644
     content repository
     action :create
-    notifies :delete, 'file[/var/lib/apt/periodic/update-success-stamp]', :immediately
-    notifies :run, 'execute[apt-get update]', :immediately if new_resource.cache_rebuild
+    notifies :delete, 'file[/var/lib/apt/periodic/update-success-stamp]', :immediately if new_resource.cache_rebuild == :true
+    notifies :run, 'execute[apt-get update]', :immediately if new_resource.cache_rebuild == :true
   end
+#  new_resource.updated_by_last_action(true)
 end
 
 action :remove do

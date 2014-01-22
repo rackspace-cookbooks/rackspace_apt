@@ -22,6 +22,11 @@
 # or other cookbooks which notify these resources will fail on non-apt-enabled
 # systems.
 
+file '/etc/apt/sources.list' do
+  action :delete
+  only_if { node['rackspace_apt']['switch']['delete_sources_list'] }
+end
+
 if node['rackspace_apt']['switch']['enable_rackspace_mirrors']
   case node['platform']
   when 'ubuntu'
@@ -42,24 +47,37 @@ if node['rackspace_apt']['switch']['enable_rackspace_mirrors']
   end
 end
 
+repos = []
 # only add repos if running a supported platform, although end user may also define repos and they'll be defined here
 if node['rackspace_apt']['repos']
   node['rackspace_apt']['repos'].each_key do |repo|
     node['rackspace_apt']['repos'][repo].each do |dist, components|
-      rackspace_apt_repository "#{repo}-#{dist}".gsub('/', '-') do
+      resource_name = "#{repo}-#{dist}".gsub('/', '-')
+      rackspace_apt_repository resource_name do
         uri "http://#{repo}"
         distribution dist
         components components
         deb_src :true
-        only_if { node['rackspace_apt']['apt_installed'] }
+        cache_rebuild :false
+	only_if { node['rackspace_apt']['apt_installed'] }
         not_if "egrep '#{repo}/? #{dist}' /etc/apt/sources.list" # do not define duplicate entries
         action :add
       end
+      repos << resources(:rackspace_apt_repository => resource_name)
     end
   end
 end
 
-file '/etc/apt/sources.list' do
-  action :delete
-  only_if { node['rackspace_apt']['switch']['delete_sources_list'] }
+ruby_block "find repos_updated" do
+  block do
+    if repos.length > 0 
+      repos.each do |repo| 
+        if repo.updated_by_last_action?
+	  resources(:execute => "apt-get update").run_action(:run)
+	  break
+	end
+      end
+    end
+  end
+  action :create
 end

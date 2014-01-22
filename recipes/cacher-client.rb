@@ -32,10 +32,10 @@ servers = []
 if node['rackspace_apt']['config']['cacher_server']
   if node['rackspace_apt']['config']['cacher_client']['cacher_ipaddress']
     cacher = Chef::Node.new
-    cacher.default.name = node['rackspace_apt']['config']['cacher_client']['cacher_ipaddress']
-    cacher.default.ipaddress = node['rackspace_apt']['config']['cacher_client']['cacher_ipaddress']
-    cacher.default.rackspace_apt.config.cacher_server.Port.value = node['rackspace_apt']['config']['cacher_server']['Port']['value']
-    cacher.default.rackspace_apt.switch.cacher_server.cacher_interface = node['rackspace_apt']['switch']['cacher_server']['cacher_interface']
+    cacher.default['name'] = node['rackspace_apt']['config']['cacher_client']['cacher_ipaddress']
+    cacher.default['ipaddress'] = node['rackspace_apt']['config']['cacher_client']['cacher_ipaddress']
+    cacher.default['rackspace_apt']['config']['cacher_server']['Port']['value'] = node['rackspace_apt']['config']['cacher_server']['Port']['value']
+    cacher.default['rackspace_apt']['switch']['cacher_server']['cacher_interface'] = node['rackspace_apt']['switch']['cacher_server']['cacher_interface']
     servers << cacher
   elsif node['rackspace_apt']['switch']['caching_server']
     node.override['rackspace_apt']['switch']['compiletime'] = false

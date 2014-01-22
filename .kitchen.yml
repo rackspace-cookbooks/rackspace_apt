@@ -10,6 +10,13 @@ platforms:
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
   run_list:
   - recipe[rackspace_apt]
+  attributes:
+    rackspace_apt:
+      switch:
+        delete_sources_list: true
+      repos:
+        apt.puppetlabs.com:
+          precise: [main]
 
 - name: debian-7.2.0
   driver_config:
@@ -17,19 +24,17 @@ platforms:
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
   run_list:
   - recipe[rackspace_apt]
+  attributes:
+    rackspace_apt:
+      switch:
+        delete_sources_list: true
 
 suites:
 - name: default
   run_list:
   - recipe[minitest-handler]
   - recipe[rackspace_apt_test]
-  attributes:
-    rackspace_apt:
-      switch:
-        enable_rackspace_mirrors: true
-      repos:
-        apt.puppetlabs.com:
-          precise: [main,dependencies]        
+  attributes: {}
   excludes:
   - centos-6.4
 
