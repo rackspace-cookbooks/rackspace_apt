@@ -23,6 +23,8 @@
 # or other cookbooks which notify these resources will fail on non-apt-enabled
 # systems.
 
+require File.expand_path('../../libraries/helpers', __FILE__)
+
 node.default['rackspace_apt']['apt_installed'] = true
 
 unless !which('apt-get').nil?
