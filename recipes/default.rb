@@ -27,7 +27,7 @@ require File.expand_path('../../libraries/helpers', __FILE__)
 
 node.default['rackspace_apt']['apt_installed'] = true
 
-unless !which('apt-get').nil?
+unless apt_installed?
   Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.'
   node.default['rackspace_apt']['apt_installed'] = false
 end
