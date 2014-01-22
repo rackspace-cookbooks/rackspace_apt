@@ -30,18 +30,24 @@ suites:
       repos:
         apt.puppetlabs.com:
           precise: [main,dependencies]        
+  excludes:
+  - centos-6.4
 
 - name: cacher-client
   run_list:
   - recipe[minitest-handler]
   - recipe[rackspace_apt_test::cacher-client]
   attributes: {}
+  excludes:
+  - centos-6.4
 
 - name: cacher-ng
   run_list:
   - recipe[minitest-handler]
   - recipe[rackspace_apt_test::cacher-ng]
   attributes: {}
+  excludes:
+  - centos-6.4
 
 - name: cacher-ng-client
   run_list:
@@ -59,9 +65,13 @@ suites:
         cacher_server:       
           cacher_interface: 'eth0'
         compiletime: true
+  excludes:
+  - centos-6.4
 
 - name: lwrps
   run_list:
   - recipe[minitest-handler]
   - recipe[rackspace_apt_test::lwrps]
   attributes: {}
+  excludes:
+  - centos-6.4
