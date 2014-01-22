@@ -59,23 +59,23 @@ if node['rackspace_apt']['repos']
         components components
         deb_src :true
         cache_rebuild :false
-	only_if { node['rackspace_apt']['apt_installed'] }
+        only_if { node['rackspace_apt']['apt_installed'] }
         not_if "egrep '#{repo}/? #{dist}' /etc/apt/sources.list" # do not define duplicate entries
         action :add
       end
-      repos << resources(:rackspace_apt_repository => resource_name)
+      repos << resources(rackspace_apt_repository: resource_name)
     end
   end
 end
 
-ruby_block "find repos_updated" do
+ruby_block 'find repos_updated' do
   block do
-    if repos.length > 0 
-      repos.each do |repo| 
+    if repos.length > 0
+      repos.each do |repo|
         if repo.updated_by_last_action?
-	  resources(:execute => "apt-get update").run_action(:run)
-	  break
-	end
+          resources(execute: 'apt-get update').run_action(:run)
+          break
+        end
       end
     end
   end
