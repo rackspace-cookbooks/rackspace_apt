@@ -52,8 +52,7 @@ repos = []
 if node['rackspace_apt']['repos']
   node['rackspace_apt']['repos'].each_key do |repo|
     node['rackspace_apt']['repos'][repo].each do |dist, components|
-      resource_name = "#{repo}-#{dist}".gsub('/', '-')
-      rackspace_apt_repository resource_name do
+      rackspace_apt_repository "#{repo}-#{dist}".gsub('/', '-') do
         uri "http://#{repo}"
         distribution dist
         components components
@@ -63,7 +62,7 @@ if node['rackspace_apt']['repos']
         not_if "egrep '#{repo}/? #{dist}' /etc/apt/sources.list" # do not define duplicate entries
         action :add
       end
-      repos << resources(rackspace_apt_repository: resource_name)
+      repos << resources(rackspace_apt_repository: "#{repo}-#{dist}".gsub('/', '-'))
     end
   end
 end

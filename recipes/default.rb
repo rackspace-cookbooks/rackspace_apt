@@ -25,7 +25,7 @@
 
 node.default['rackspace_apt']['apt_installed'] = true
 
-unless apt_installed?
+unless !which('apt-get').nil?
   Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.'
   node.default['rackspace_apt']['apt_installed'] = false
 end
