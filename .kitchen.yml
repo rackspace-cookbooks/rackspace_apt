@@ -32,50 +32,35 @@ platforms:
 suites:
 - name: default
   run_list:
-  - recipe[minitest-handler]
-  - recipe[rackspace_apt_test]
+  - recipe[rackspace_apt]
   attributes: {}
   excludes:
   - centos-6.4
 
 - name: cacher-client
   run_list:
-  - recipe[minitest-handler]
-  - recipe[rackspace_apt_test::cacher-client]
+  - recipe[rackspace_apt::cacher-client]
   attributes: {}
   excludes:
   - centos-6.4
 
 - name: cacher-ng
   run_list:
-  - recipe[minitest-handler]
-  - recipe[rackspace_apt_test::cacher-ng]
+  - recipe[rackspace_apt::cacher-ng]
   attributes: {}
   excludes:
   - centos-6.4
 
 - name: cacher-ng-client
   run_list:
-  - recipe[minitest-handler]
-  - recipe[rackspace_apt_test::cacher-ng-client]
-  attributes:
-    rackspace_apt:
-      config: 
-        cacher_server: 
-          CacheDir: 
-            value: '/tmp/apt-cacher'
-          Port: 
-            value: '9876'
-      switch:
-        cacher_server:       
-          cacher_interface: 'eth0'
-        compiletime: true
+  - recipe[rackspace_apt::cacher-ng]
+  - recipe[rackspace_apt::cacher-client]
+  attributes: {}
   excludes:
   - centos-6.4
 
 - name: lwrps
   run_list:
-  - recipe[minitest-handler]
   - recipe[rackspace_apt_test::lwrps]
   attributes: {}
   excludes:

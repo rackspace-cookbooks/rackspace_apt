@@ -48,13 +48,13 @@ node['rackspace_apt']['repos'][<URI>][<DIST>] = %w{<COMPONENT1> <COMPONENT2>}
 This will create a rackspace_apt_repository lightweight resource with the following parameters:
 
 ```ruby
-rackspace_apt_repository "apt.opscode.com-precise-0.10" do
+rackspace_apt_repository "<URI>-<DIST>" do
   uri <URI>
   distribution <DIST>
   components [<COMPONENT1>, <COMPONENT2>]
-  deb_src true
+  deb_src :true
   only_if { node['rackspace_apt']['apt_installed'] }
-  not_if { "egrep 'apt.opscode.com precise-0.10' /etc/apt/sources.list" } 
+  not_if { "egrep '<URI> <DIST>' /etc/apt/sources.list" } 
   action :add
 end
 ```
@@ -72,7 +72,7 @@ rackspace_apt_repository "apt.opscode.com-precise-0.10" do
   uri "http://apt.opscode.com/"
   distribution "precise-0.10"
   components ['main', 'testing']
-  deb_src true
+  deb_src :true
   only_if { node['rackspace_apt']['apt_installed'] }
   not_if { "egrep 'apt.opscode.com precise-0.10' /etc/apt/sources.list" } 
   action :add
