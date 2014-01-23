@@ -34,10 +34,7 @@ suites:
   run_list:
   - recipe[minitest-handler]
   - recipe[rackspace_apt_test]
-  attributes:
-    rackspace_apt:
-      switch:
-        enable_rackspace_mirrors: true
+  attributes: {}
   excludes:
   - centos-6.4
 

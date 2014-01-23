@@ -24,6 +24,9 @@
 # systems.
 
 require File.expand_path('../../libraries/helpers', __FILE__)
+require File.expand_path('../../attributes/default', __FILE__)
+require File.expand_path('../../resources/repository', __FILE__)
+require File.expand_path('../../providers/repository', __FILE__)
 
 node.default['rackspace_apt']['apt_installed'] = true
 
