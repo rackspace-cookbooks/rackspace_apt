@@ -67,6 +67,7 @@ if node['rackspace_apt']['repos']
   end
 end
 
+
 ruby_block 'find repos_updated' do
   block do
     if repos.length > 0

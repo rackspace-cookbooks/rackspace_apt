@@ -27,10 +27,10 @@ require File.expand_path('../../libraries/helpers', __FILE__)
 
 node.default['rackspace_apt']['apt_installed'] = true
 
-#unless apt_installed?
-#  Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.'
-#  node.default['rackspace_apt']['apt_installed'] = false
-#end
+unless apt_installed?
+  Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.'
+  node.default['rackspace_apt']['apt_installed'] = false
+end
 
 include_recipe 'rackspace_apt::repos' if node['rackspace_apt']['apt_installed']
 
@@ -39,7 +39,7 @@ execute 'apt-get-update' do
   command 'apt-get update'
   ignore_failure true
   only_if { node['rackspace_apt']['apt_installed'] }
-  not_if { ::File.exists?('/var/lib/apt/periodic/update-success-stamp') }
+  not_if 'test -f /var/lib/apt/periodic/update-success-stamp'
 end
 
 # For other recipes to call to force an update

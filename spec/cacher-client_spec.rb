@@ -4,6 +4,8 @@ describe 'rackspace_apt::cacher-client' do
 
   before do
     stub_command('grep Acquire::http::Proxy /etc/apt/apt.conf').and_return(true)
+    # doesn't matter what this returns for this recipe but chefspec needs us to stub it anyway
+    stub_command('test -f /var/lib/apt/periodic/update-success-stamp').and_return(true)
   end
 
   context 'no server' do
