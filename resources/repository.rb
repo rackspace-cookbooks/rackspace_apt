@@ -38,4 +38,4 @@ attribute :key, kind_of: String, default: nil
 attribute :cookbook, kind_of: String, default: nil
 # trigger cache rebuild
 # If not you can trigger in the recipe itself after checking the status of resource.updated{_by_last_action}?
-attribute :cache_rebuild, default: true
+attribute :cache_rebuild, default: :true
