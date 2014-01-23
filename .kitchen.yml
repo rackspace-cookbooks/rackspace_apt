@@ -14,9 +14,6 @@ platforms:
     rackspace_apt:
       switch:
         delete_sources_list: true
-      repos:
-        apt.puppetlabs.com:
-          precise: [main, devel]
 
 - name: debian-7.2.0
   driver_config:
