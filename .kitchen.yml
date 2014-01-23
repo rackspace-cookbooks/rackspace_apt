@@ -55,10 +55,3 @@ suites:
   attributes: {}
   excludes:
   - centos-6.4
-
-- name: lwrps
-  run_list:
-  - recipe[rackspace_apt_test::lwrps]
-  attributes: {}
-  excludes:
-  - centos-6.4
