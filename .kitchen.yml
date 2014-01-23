@@ -1,69 +1,60 @@
 ---
-driver_plugin: vagrant
-driver_config:
-  require_chef_omnibus: true
+driver:
+  name: rackspace
+  require_chef_omnibus: '11.8.2'
+  rackspace_username: <%= ENV['rackspace_username'] %>
+  rackspace_api_key:  <%= ENV['rackspace_api_key'] %>
+  rackspace_region: 'ord'
+  public_key_path: <%= ENV['sshpubkey'] %>
+  ssh_key: <%= ENV['ssh_key'] %>
 
 platforms:
+- name: centos-6.4
+  driver_config:
+    image_id: 'f70ed7c7-b42e-4d77-83d8-40fa29825b85'
 - name: ubuntu-12.04
   driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
-  run_list:
-  - recipe[apt]
-
-- name: ubuntu-10.04
+    image_id: '80fbcb55-b206-41f9-9bc2-2dd7aac6c061'
+- name: debian-7.2
   driver_config:
-    box: opscode-ubuntu-10.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-10.04_provisionerless.box
-  run_list:
-  - recipe[apt]
-
-- name: debian-7.1.0
-  driver_config:
-    box: opscode-debian-7.1.0
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_debian-7.1.0_provisionerless.box
-  run_list:
-  - recipe[apt]
-
-- name: ubuntu-13.04
-  driver_config:
-    box: opscode-ubuntu-13.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-13.04_provisionerless.box
-  run_list:
-  - recipe[apt]
+    image_id: '857d7d36-34f3-409f-8435-693e8797be8b'
 
 suites:
 - name: default
   run_list:
-  - recipe[minitest-handler]
-  - recipe[apt_test]
+  - recipe[rackspace_apt]
   attributes: {}
+  excludes:
+  - centos-6.4
 
 - name: cacher-client
   run_list:
-  - recipe[minitest-handler]
-  - recipe[apt_test::cacher-client]
+  - recipe[rackspace_apt::cacher-client]
   attributes: {}
+  excludes:
+  - centos-6.4
 
 - name: cacher-ng
   run_list:
-  - recipe[minitest-handler]
-  - recipe[apt_test::cacher-ng]
+  - recipe[rackspace_apt::cacher-ng]
   attributes: {}
+  excludes:
+  - centos-6.4
 
 - name: cacher-ng-client
   run_list:
-  - recipe[minitest-handler]
-  - recipe[apt_test::cacher-ng-client]
-  attributes:
-    apt:
-      cacher_dir: '/tmp/apt-cacher'
-      cacher_port: '9876'
-      cacher_interface: 'eth0'
-      compiletime: true
+  - recipe[rackspace_apt::cacher-ng]
+  - recipe[rackspace_apt::cacher-client]
+  attributes: {}
+  excludes:
+  - centos-6.4
 
 - name: lwrps
   run_list:
-  - recipe[minitest-handler]
-  - recipe[apt_test::lwrps]
-  attributes: {}
+  - recipe[rackspace_apt] # required for rackspace_apt_Test::lwrps 
+  - recipe[rackspace_apt_test::lwrps]
+  attributes:
+    rackspace_apt:
+      apt_installed: false # just need rackspace_apt::default for the LWRPs, don't want to run the recipe
+  excludes:
+  - centos-6.4
