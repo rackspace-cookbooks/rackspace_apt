@@ -27,10 +27,10 @@ require File.expand_path('../../libraries/helpers', __FILE__)
 
 node.default['rackspace_apt']['apt_installed'] = true
 
-unless apt_installed?
-  Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.'
-  node.default['rackspace_apt']['apt_installed'] = false
-end
+#unless apt_installed?
+#  Chef::Log.debug 'apt is not installed. Apt-specific resources will not be executed.'
+#  node.default['rackspace_apt']['apt_installed'] = false
+#end
 
 include_recipe 'rackspace_apt::repos' if node['rackspace_apt']['apt_installed']
 
