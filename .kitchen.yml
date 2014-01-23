@@ -1,30 +1,23 @@
 ---
-driver_plugin: vagrant
-driver_config:
-  require_chef_omnibus: true
+driver:
+  name: rackspace
+  require_chef_omnibus: '11.8.2'
+  rackspace_username: <%= ENV['rackspace_username'] %>
+  rackspace_api_key:  <%= ENV['rackspace_api_key'] %>
+  rackspace_region: 'ord'
+  public_key_path: <%= ENV['sshpubkey'] %>
+  ssh_key: <%= ENV['ssh_key'] %>
 
 platforms:
+- name: centos-6.4
+  driver_config:
+    image_id: 'f70ed7c7-b42e-4d77-83d8-40fa29825b85'
 - name: ubuntu-12.04
   driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-  run_list:
-  - recipe[rackspace_apt]
-  attributes:
-    rackspace_apt:
-      switch:
-        delete_sources_list: true
-
-- name: debian-7.2.0
+    image_id: '80fbcb55-b206-41f9-9bc2-2dd7aac6c061'
+- name: debian-7.2
   driver_config:
-    box: opscode-debian-7.2.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
-  run_list:
-  - recipe[rackspace_apt]
-  attributes:
-    rackspace_apt:
-      switch:
-        delete_sources_list: true
+    image_id: '857d7d36-34f3-409f-8435-693e8797be8b'
 
 suites:
 - name: default
@@ -53,5 +46,15 @@ suites:
   - recipe[rackspace_apt::cacher-ng]
   - recipe[rackspace_apt::cacher-client]
   attributes: {}
+  excludes:
+  - centos-6.4
+
+- name: lwrps
+  run_list:
+  - recipe[rackspace_apt] # required for rackspace_apt_Test::lwrps 
+  - recipe[rackspace_apt_test::lwrps]
+  attributes:
+    rackspace_apt:
+      apt_installed: false # just need rackspace_apt::default for the LWRPs, don't want to run the recipe
   excludes:
   - centos-6.4
