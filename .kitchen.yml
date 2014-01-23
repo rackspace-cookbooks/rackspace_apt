@@ -14,6 +14,7 @@ platforms:
     rackspace_apt:
       switch:
         delete_sources_list: true
+        enable_rackspace_mirrors: true
       repos:
         apt.puppetlabs.com:
           precise: [main, devel]
