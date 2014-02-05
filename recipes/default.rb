@@ -30,6 +30,11 @@ unless apt_installed?
   node.default['rackspace_apt']['apt_installed'] = false
 end
 
+# provides /var/lib/apt/periodic/update-success-stamp on apt-get update
+package 'update-notifier-common' do
+  only_if { node['rackspace_apt']['apt_installed'] }
+end
+
 include_recipe 'rackspace_apt::repos' if node['rackspace_apt']['apt_installed']
 
 # Run apt-get update to create the stamp file
@@ -60,12 +65,6 @@ execute 'apt-get autoclean' do
   command 'apt-get -y autoclean'
   only_if { node['rackspace_apt']['apt_installed'] }
   action :nothing
-end
-
-# provides /var/lib/apt/periodic/update-success-stamp on apt-get update
-package 'update-notifier-common' do
-  notifies :run, 'execute[apt-get-update]', :immediately
-  only_if { node['rackspace_apt']['apt_installed'] }
 end
 
 execute 'apt-get-update-periodic' do
