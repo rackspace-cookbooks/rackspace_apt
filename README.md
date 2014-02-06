@@ -290,6 +290,13 @@ Put `recipe[rackspace_apt::cacher-ng]` in the run_list for a server to provide A
 
 If you want to cleanup unused packages, there is also the `apt-get autoclean` and `apt-get autoremove` resources provided for automated cleanup.
 
+Contributing
+-------------
+* Please see contributing guide [here](https://github.com/rackspace-cookbooks/contributing/blob/master/CONTRIBUTING.md)
+
+Testing
+-------
+* Please see testing guide [here](https://github.com/rackspace-cookbooks/contributing/blob/master/CONTRIBUTING.md)
 
 License & Authors
 -----------------
