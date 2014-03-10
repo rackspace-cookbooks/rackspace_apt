@@ -2,6 +2,14 @@ apt Cookbook CHANGELOG
 ======================
 This file is used to list changes made in each version of the rackspace_apt cookbook.
 
+v3.0.3
+------
+- Minor Gemfile and test-kitchen updates
+
+v3.0.2
+------
+- stopped apt-get update from running multiple times
+
 v3.0.0
 ------
 ### Improvement
